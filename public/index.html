@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickWeb</title>
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>QuickWeb</h1>
+      <p>Rapid Deployment for Your Web Projects</p>
+
+      <form
+        id="uploadForm"
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="zipFile" accept=".zip" required /><br />
+        <input
+          type="text"
+          name="folderName"
+          placeholder="Name"
+          required
+          pattern="[a-zA-Z_]+"
+          title="Please enter letters and underscores only"
+        /><br />
+        <button type="submit">Upload</button>
+      </form>
+
+      <div id="uploadResult"></div>
+    </div>
+    <script src="js/index.js"></script>
+  </body>
+</html>
