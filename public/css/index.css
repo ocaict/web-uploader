@@ -22,7 +22,9 @@ h1 {
   color: #333;
   margin-bottom: 20px;
 }
-
+p {
+  text-align: center;
+}
 form {
   display: flex;
   flex-direction: column;
@@ -95,4 +97,10 @@ button[type="submit"]:disabled {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.logo {
+  max-width: 80px;
+  display: block;
+  margin: 0 auto 20px;
 }
