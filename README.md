@@ -25,7 +25,3 @@ QuickWeb is a lightweight Node.js web application for rapid deployment of web pr
 ## Contributing
 
 Contributions are welcome! Please submit pull requests to contribute to QuickWeb.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
