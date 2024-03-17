@@ -4,6 +4,8 @@ document
   .addEventListener("submit", function (event) {
     event.preventDefault();
     document.querySelector(".loader").style.display = "block";
+    // Disable the upload button
+    document.getElementById("uploadButton").disabled = true;
 
     const formData = new FormData(this);
     fetch("/upload", {
@@ -20,5 +22,9 @@ document
       .catch((error) => {
         document.querySelector(".loader").style.display = "none";
         console.error("Error:", error);
+      })
+      .finally(() => {
+        // Disable the upload button
+        document.getElementById("uploadButton").disabled = false;
       });
   });
