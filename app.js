@@ -3,10 +3,12 @@ const multer = require("multer");
 const extract = require("extract-zip");
 const path = require("path");
 const fs = require("fs-extra");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3600;
 
 // MiddleWares
+app.use(cors());
 app.use(express.static("public"));
 // Serve static files from the 'uploads' directory
 app.use("/uploads", express.static("uploads"));
@@ -70,6 +72,11 @@ app.get("/upload/:folderName", (req, res) => {
 
     return res.redirect(`/uploads/${folderName}`);
   });
+});
+
+app.post("/ispring", (req, res) => {
+  console.log(req.body);
+  return res.send({ success: true });
 });
 
 app.all("*", (req, res) => {

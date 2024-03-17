@@ -8,6 +8,7 @@ document
     document.getElementById("uploadButton").disabled = true;
 
     const formData = new FormData(this);
+    formData.append("email", "oluegwu@gmail.com");
     fetch("/upload", {
       method: "POST",
       body: formData,
