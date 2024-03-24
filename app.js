@@ -4,6 +4,7 @@ const extract = require("extract-zip");
 const path = require("path");
 const fs = require("fs-extra");
 const cors = require("cors");
+const { readFile, writeFile } = require("./utils/readFile");
 const app = express();
 const PORT = process.env.PORT || 3600;
 
@@ -73,11 +74,39 @@ app.get("/upload/:folderName", (req, res) => {
   });
 });
 
-app.post("/ispring", (req, res) => {
-  console.log(req.body);
+app.post("/ispring", async (req, res) => {
+  const { USER_EMAIL, USER_NAME, qt, ps } = req.body;
+
+  const users = await readFile("./result.json");
+  const data = {
+    id: users.length > 1 ? users.length + 1 : 1,
+    fullName: USER_NAME,
+    email: USER_EMAIL,
+    courseTitle: qt,
+    score: +ps,
+    date: new Date().toLocaleDateString(),
+  };
+  users.push(data);
+  writeFile("./result.json", users);
+
   return res.send({ success: true });
 });
 
+app.get("/users", async (req, res) => {
+  try {
+    const results = await readFile("./result.json");
+    if (!results) {
+      return res.json({ message: "Result not available" });
+    }
+    return res.json(results);
+  } catch (error) {
+    res.json({ message: "Something went wrong" });
+  }
+});
+
+app.get("/results", (req, res) => {
+  return res.sendFile(__dirname + "/public/result.html");
+});
 app.all("*", (req, res) => {
   res.send(`<h2>OOPs! Page Not Found</h2>`);
 });
