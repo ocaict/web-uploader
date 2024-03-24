@@ -18,14 +18,27 @@ document
         // Display the URL of the uploaded web app
         // Hide spinner after upload is complete
         document.querySelector(".loader").style.display = "none";
-        uploadResultDiv.innerHTML = data.link;
+        // uploadResultDiv.innerHTML = data.link;
+        localStorage.setItem("url", `uploads/${formData.get("folderName")}`);
+        location.reload();
       })
       .catch((error) => {
         document.querySelector(".loader").style.display = "none";
         console.error("Error:", error);
+        uploadResultDiv.innerHTML = error.message;
       })
       .finally(() => {
         // Disable the upload button
         document.getElementById("uploadButton").disabled = false;
       });
   });
+
+function showIframe() {
+  const url = localStorage.getItem("url") || "./upload/olu";
+  const iframe = document.getElementById("course-frame");
+  iframe.src = url;
+  const courseContainer = document.querySelector(".course-preview-container");
+  courseContainer.classList.remove("hide");
+}
+
+showIframe();

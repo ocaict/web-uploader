@@ -26,7 +26,6 @@ app.post("/upload", upload.single("zipFile"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-
   const folderName = req.body.folderName; // Assuming folderName is provided in the request body
 
   if (!folderName) {
@@ -85,21 +84,7 @@ app.all("*", (req, res) => {
 
 function serveHtml(path) {
   return {
-    link: `<div>
-    <a
-    style="
-      text-decoration: none;
-      font-size: 20px;
-      padding: 10px;
-      color: darkcyan;
-      cursor: pointer;
-    "
-    href="${path}"
-    target="_blank"
-    rel="noopener noreferrer"
-  >View Your App</a>
-
-    </div>`,
+    link: path,
   };
 }
 
