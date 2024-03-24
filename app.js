@@ -79,7 +79,7 @@ app.post("/ispring", async (req, res) => {
 
   const users = await readFile("./result.json");
   const data = {
-    id: users.length > 1 ? users.length + 1 : 1,
+    id: users.length + 1,
     fullName: USER_NAME,
     email: USER_EMAIL,
     courseTitle: qt,
