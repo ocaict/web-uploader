@@ -11,7 +11,7 @@
     <div class="container">
       <img src="images/logo.png" alt="Logo" class="logo" />
       <h1>QuickWeb</h1>
-      <p>Rapid Deployment for Your Web/eLearning Projects</p>
+      <p>Rapid Deployment for Your Static web Projects</p>
       <form
         id="uploadForm"
         action="/upload"
@@ -27,34 +27,12 @@
           pattern="[a-zA-Z_]+"
           title="Please enter letters and underscores only"
         /><br />
+
         <button type="submit" id="uploadButton">Upload</button>
       </form>
       <div class="loader"></div>
-      <div id="uploadResult" class="hid"></div>
-    </div>
-
-    <div class="course-preview-container hide">
-      <iframe
-        id="course-frame"
-        class="course-iframe"
-        src="./upload/olu"
-        frameborder="0"
-      ></iframe>
-    </div>
-    <div class="wrapper">
-      <a
-        style="
-          text-decoration: none;
-          font-size: 20px;
-          padding: 10px;
-          color: darkcyan;
-          cursor: pointer;
-        "
-        href="/results"
-        target="_blank"
-        rel="noopener noreferrer"
-        >View Results</a
-      >
+      <div id="uploadResult"></div>
+      <button class="btn btn-copy-link">Copy Link</button>
     </div>
     <script src="js/index.js"></script>
   </body>

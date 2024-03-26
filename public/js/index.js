@@ -1,4 +1,5 @@
 let uploadResultDiv = document.getElementById("uploadResult");
+let folderName = null;
 document
   .getElementById("uploadForm")
   .addEventListener("submit", function (event) {
@@ -8,23 +9,19 @@ document
     document.getElementById("uploadButton").disabled = true;
 
     const formData = new FormData(this);
-    formData.append("email", "oluegwu@gmail.com");
+    folderName = formData.get("folderName");
     fetch("/upload", {
       method: "POST",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        // Display the URL of the uploaded web app
         // Hide spinner after upload is complete
         document.querySelector(".loader").style.display = "none";
-        // uploadResultDiv.innerHTML = data.link;
-        localStorage.setItem("url", `uploads/${formData.get("folderName")}`);
-        location.reload();
+        uploadResultDiv.innerHTML = data.link;
       })
       .catch((error) => {
         document.querySelector(".loader").style.display = "none";
-        console.error("Error:", error);
         uploadResultDiv.innerHTML = error.message;
       })
       .finally(() => {
@@ -33,12 +30,14 @@ document
       });
   });
 
-function showIframe() {
-  const url = localStorage.getItem("url") || "./upload/olu";
-  const iframe = document.getElementById("course-frame");
-  iframe.src = url;
-  const courseContainer = document.querySelector(".course-preview-container");
-  courseContainer.classList.remove("hide");
-}
+const copyLinkBtn = document.querySelector(".btn-copy-link");
+copyLinkBtn.addEventListener("click", copyLink);
 
-showIframe();
+function copyLink() {
+  const url = location.href;
+  if (folderName) {
+    const link = `${url}uploads/${folderName}`;
+    navigator.clipboard.writeText(link);
+    alert("Link Copied to the clipboard");
+  }
+}

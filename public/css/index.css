@@ -51,6 +51,15 @@ input[type="text"] {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 16px;
 }
+select {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
 
 button[type="submit"] {
   padding: 10px;
@@ -125,4 +134,13 @@ button[type="submit"]:disabled {
 
 .hide {
   display: none;
+}
+
+.btn {
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  background-color: #333;
+  color: #f0f0f0;
+  border-radius: 3px;
 }

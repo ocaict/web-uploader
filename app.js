@@ -4,14 +4,13 @@ const extract = require("extract-zip");
 const path = require("path");
 const fs = require("fs-extra");
 const cors = require("cors");
-const { readFile, writeFile } = require("./utils/readFile");
 const app = express();
 const PORT = process.env.PORT || 3600;
 
 // MiddleWares
 app.use(cors());
-app.use(express.static("public"));
 // Serve static files from the 'uploads' directory
+app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,13 +23,14 @@ app.post("/upload", upload.single("zipFile"), async (req, res) => {
   if (!fs.existsSync("uploads")) {
     await fs.mkdir("uploads");
   }
+
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-  const folderName = req.body.folderName; // Assuming folderName is provided in the request body
+  const folderName = req.body.folderName;
 
   if (!folderName) {
-    return res.status(400).send("Folder name is required.");
+    return res.status(400).send("File name is required.");
   }
 
   const extractDir = path.join(__dirname, "uploads", folderName);
@@ -45,12 +45,11 @@ app.post("/upload", upload.single("zipFile"), async (req, res) => {
 
     // Extract the zip file
     await extract(zipFilePath, { dir: extractDir });
-
     // Construct the URL for the uploaded web app
-    const uploadUrl = `/upload/${folderName}/`;
+    const link = `upload/${folderName}/`;
     await fs.unlink(zipFilePath);
     // Serve the uploaded web app URL
-    return res.send(serveHtml(uploadUrl));
+    return res.send(serveHtml({ link }));
   } catch (err) {
     console.error("Error uploading file:", err);
     return res.status(500).send("Error uploading file.");
@@ -66,7 +65,7 @@ app.get("/upload/:folderName", (req, res) => {
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
       // File does not exist
-      return res.status(404).send("Web app not found.");
+      return res.status(404).sendFile(__dirname + "/public/404.html");
     }
     // File exists, serve it
 
@@ -74,46 +73,27 @@ app.get("/upload/:folderName", (req, res) => {
   });
 });
 
-app.post("/ispring", async (req, res) => {
-  const { USER_EMAIL, USER_NAME, qt, ps } = req.body;
-
-  const users = await readFile("./result.json");
-  const data = {
-    id: users.length + 1,
-    fullName: USER_NAME,
-    email: USER_EMAIL,
-    courseTitle: qt,
-    score: +ps,
-    date: new Date().toLocaleDateString(),
-  };
-  users.push(data);
-  writeFile("./result.json", users);
-
-  return res.send({ success: true });
-});
-
-app.get("/users", async (req, res) => {
-  try {
-    const results = await readFile("./result.json");
-    if (!results) {
-      return res.json({ message: "Result not available" });
-    }
-    return res.json(results);
-  } catch (error) {
-    res.json({ message: "Something went wrong" });
-  }
-});
-
-app.get("/results", (req, res) => {
-  return res.sendFile(__dirname + "/public/result.html");
-});
 app.all("*", (req, res) => {
-  res.send(`<h2>OOPs! Page Not Found</h2>`);
+  return res.sendFile(__dirname + "/public/404.html");
 });
 
-function serveHtml(path) {
+function serveHtml({ link }) {
   return {
-    link: path,
+    link: `
+    <a
+      style="
+        text-decoration: none;
+        font-size: 20px;
+        padding: 10px;
+        color: darkcyan;
+        cursor: pointer;
+      "
+      href="./${link}"
+      target="_blank"
+      rel="noopener noreferrer"
+      >View Your App</a
+    >
+`,
   };
 }
 
